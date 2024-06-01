@@ -53,10 +53,46 @@ ORDER BY Duración_Maxima desc
 
 -- 5. Muestra las películas más alquiladas en orden descendente.
 
+select T1.title as Pelicula, count(T3.rental_id) as Total_Rentas from film as T1
+
+LEFT JOIN inventory as T2 ON T1.film_id = T2.film_id
+LEFT JOIN rental AS T3 ON T2.inventory_id = T3.inventory_id
+group by Pelicula
+ORDER BY Total_rentas DESC, Pelicula ASC
+;
+
 -- 6. Enumera los cinco principales géneros en ingresos brutos en orden descendente.
+
+SELECT
+    T6.name AS Genero,
+    SUM(T1.amount) AS Ingresos_Brutos
+FROM
+    payment as T1
+JOIN rental as T2 ON T1.rental_id = T2.rental_id
+JOIN inventory as T3 ON T2.inventory_id = T3.inventory_id
+JOIN film as T4 ON T3.film_id = T4.film_id
+JOIN film_category as T5 ON T4.film_id = T5.film_id
+JOIN category as T6 ON T5.category_id = T6.category_id
+GROUP BY T6.name
+ORDER BY Ingresos_Brutos DESC
+LIMIT 5;
+
 -- 7. ¿Está "Academy Dinosaur" disponible para alquilar en la Tienda 1?
 
-
+SELECT
+    T1.inventory_id,
+    T2.title,
+    T3.store_id,
+    IF(T4.return_date IS NULL OR T4.return_date < NOW(), 'Available', 'Not Available') AS availability
+FROM
+    inventory as T1
+JOIN film AS T2 ON T1.film_id = T2.film_id
+JOIN store AS T3 ON T1.store_id = T3.store_id
+LEFT JOIN rental AS T4 ON T1.inventory_id = T4.inventory_id AND T4.return_date IS NULL
+WHERE
+    T2.title = 'Academy Dinosaur'
+    AND T3.store_id = 1
+HAVING availability = 'Available';
 
 
 
