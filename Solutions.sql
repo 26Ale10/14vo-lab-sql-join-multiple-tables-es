@@ -66,8 +66,7 @@ ORDER BY Total_rentas DESC, Pelicula ASC
 SELECT
     T6.name AS Genero,
     SUM(T1.amount) AS Ingresos_Brutos
-FROM
-    payment as T1
+FROM payment as T1
 JOIN rental as T2 ON T1.rental_id = T2.rental_id
 JOIN inventory as T3 ON T2.inventory_id = T3.inventory_id
 JOIN film as T4 ON T3.film_id = T4.film_id
@@ -93,12 +92,4 @@ WHERE
     T2.title = 'Academy Dinosaur'
     AND T3.store_id = 1
 HAVING availability = 'Available';
-
-
-
-
-
-
-
-
 
