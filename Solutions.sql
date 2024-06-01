@@ -81,8 +81,7 @@ LIMIT 5;
 SELECT
     T1.inventory_id,
     T2.title,
-    T3.store_id,
-    IF(T4.return_date IS NULL OR T4.return_date < NOW(), 'Available', 'Not Available') AS availability
+    T3.store_id
 FROM
     inventory as T1
 JOIN film AS T2 ON T1.film_id = T2.film_id
@@ -91,5 +90,5 @@ LEFT JOIN rental AS T4 ON T1.inventory_id = T4.inventory_id AND T4.return_date I
 WHERE
     T2.title = 'Academy Dinosaur'
     AND T3.store_id = 1
-HAVING availability = 'Available';
+    ;
 
